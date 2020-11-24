@@ -1,6 +1,12 @@
 FROM elixir:1.11-alpine
 
-RUN apk add --no-cache --no-progress postgresql-client build-base git tzdata
+RUN apk add --no-cache --no-progress postgresql-client build-base git tzdata nodejs npm
+
+WORKDIR /app/assets
+
+COPY package.json package-lock.json ./
+
+RUN npm install && node node_modules/webpack/bin/webpack.js --mode development
 
 WORKDIR /app
 
