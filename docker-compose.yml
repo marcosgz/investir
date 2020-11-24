@@ -1,0 +1,39 @@
+version: "3.5"
+services:
+  app:
+    container_name: investir_app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://investir:investir@postgres:5432/investir?sslmode=disable
+    ports:
+      - 4000:4000
+    volumes:
+      - mix_deps:/app/deps
+      - .:/app
+    networks:
+      - investir_network
+  postgres:
+    container_name: investir_postgres
+    image: postgres:12.5-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=investir
+      - POSTGRES_PASSWORD=investir
+    networks:
+      - investir_network
+
+volumes:
+  mix_deps:
+    driver: local
+  postgres_data:
+    driver: local
+
+networks:
+  investir_network:

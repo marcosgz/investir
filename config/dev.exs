@@ -2,10 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :investir, Investir.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "investir_dev",
-  hostname: "localhost",
+  url: System.get_env("DATABASE_URL"),
+  ssl: false,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

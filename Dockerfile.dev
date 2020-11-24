@@ -1,0 +1,12 @@
+FROM elixir:1.11-alpine
+
+RUN apk add --no-cache --no-progress postgresql-client build-base git tzdata
+
+WORKDIR /app
+
+COPY . ./
+
+RUN mix do local.hex --force, local.rebar --force && mix deps.get
+
+EXPOSE 4000
+CMD mix phx.server
