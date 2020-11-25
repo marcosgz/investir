@@ -14,7 +14,8 @@ defmodule Investir.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Investir.PubSub},
       # Start the Endpoint (http/https)
-      InvestirWeb.Endpoint
+      InvestirWeb.Endpoint,
+      Investir.Services.HgBrasil.child_spec()
       # Start a worker by calling: Investir.Worker.start_link(arg)
       # {Investir.Worker, arg}
     ]
