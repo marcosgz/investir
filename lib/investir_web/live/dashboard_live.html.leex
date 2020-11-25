@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Name</th>
+      <th>Variation</th>
+    </tr>
+  </thead>
+  <tbody id="stocks">
+    <%= for {id, stock} <- @stocks do %>
+      <tr id="post-<%= id %>">
+        <td><%= id %></td>
+        <td><%= Map.get(stock, "location") %></td>
+        <td><%= Map.get(stock, "name") %></td>
+        <td><%= Map.get(stock, "variation") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
