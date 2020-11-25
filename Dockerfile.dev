@@ -1,18 +1,15 @@
 FROM elixir:1.11-alpine
 
-RUN apk add --no-cache --no-progress postgresql-client build-base git tzdata nodejs npm
-
-WORKDIR /app/assets
-
-COPY package.json package-lock.json ./
-
-RUN npm install && node node_modules/webpack/bin/webpack.js --mode development
+RUN apk add --no-cache --no-progress postgresql-client build-base git tzdata nodejs npm inotify-tools
 
 WORKDIR /app
 
-COPY . ./
+COPY . .
 
 RUN mix do local.hex --force, local.rebar --force && mix deps.get
 
+RUN cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode development
+
 EXPOSE 4000
+
 CMD mix phx.server
