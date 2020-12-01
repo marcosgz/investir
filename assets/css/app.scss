@@ -1,9 +1,10 @@
 // @import "./theme/nucleo-icons.css";
 @import "./theme/black-dashboard.scss";
+@import "./theme/nucleo-icons.css";
 
 /* This file is for your main application css. */
 @import "../node_modules/nprogress/nprogress.css";
-
+@import "../node_modules/chart.js/dist/Chart.css";
 
 // /* LiveView specific classes for your customizations */
 // .phx-no-feedback.invalid-feedback,
