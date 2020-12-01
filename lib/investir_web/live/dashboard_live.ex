@@ -4,7 +4,7 @@ defmodule InvestirWeb.DashboardLive do
   def mount(_params, _session, socket) do
     {:ok, %{body: %{"results" => %{"stocks" => stocks}} }} = Investir.Services.HgBrasil.get("/finance")
     socket = assign(socket, :stocks, stocks)
-    IO.inspect(socket)
+    # IO.inspect(socket)
 
     {:ok, socket}
   end
