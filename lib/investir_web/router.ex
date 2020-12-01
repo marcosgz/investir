@@ -38,7 +38,7 @@ defmodule InvestirWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: InvestirWeb.Telemetry
+      live_dashboard "/live-dashboard", metrics: InvestirWeb.Telemetry
     end
   end
 end

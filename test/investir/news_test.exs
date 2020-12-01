@@ -6,8 +6,18 @@ defmodule Investir.NewsTest do
   describe "stories" do
     alias Investir.News.Story
 
-    @valid_attrs %{author: "some author", body: "some body", headline: "some headline", teaser: "some teaser"}
-    @update_attrs %{author: "some updated author", body: "some updated body", headline: "some updated headline", teaser: "some updated teaser"}
+    @valid_attrs %{
+      author: "some author",
+      body: "some body",
+      headline: "some headline",
+      teaser: "some teaser"
+    }
+    @update_attrs %{
+      author: "some updated author",
+      body: "some updated body",
+      headline: "some updated headline",
+      teaser: "some updated teaser"
+    }
     @invalid_attrs %{author: nil, body: nil, headline: nil, teaser: nil}
 
     def story_fixture(attrs \\ %{}) do

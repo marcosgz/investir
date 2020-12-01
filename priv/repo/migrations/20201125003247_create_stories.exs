@@ -10,6 +10,5 @@ defmodule Investir.Repo.Migrations.CreateStories do
 
       timestamps()
     end
-
   end
 end

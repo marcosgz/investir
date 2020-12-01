@@ -28,7 +28,25 @@ config :phoenix, :json_library, Jason
 
 config :investir, Investir.Services.HgBrasil,
   url: "https://api.hgbrasil.com",
+  params: %{key: System.get_env("SERVICES_HGBRASIL_API_KEY")},
   headers: []
+
+config :investir, Investir.Cache,
+  adapter: Nebulex.Adapters.Local,
+  gc_interval: 3600
+
+config :number, currency: [
+    unit: "R$",
+    precision: 2,
+    delimiter: ".",
+    separator: ",",
+    format: "%u %n"
+  ]
+config :number, percentage: [
+    delimiter: ".",
+    separator: ",",
+    precision: 2
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

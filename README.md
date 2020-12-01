@@ -1,5 +1,20 @@
 # Investir
 
+## Configurar
+
+Recomendo subir aplicação usando docker-compose. Para isso copie o arquivo `docker-compose.sample.yml` para `docker-compose.yml` e edite de acordo.
+
+Para subir aplicação basta usar o comando:
+```
+docker-compose up
+```
+
+Na primeira execução será necessário rodar as migrações do banco de dados e executar o seed. Para isso utilize o comando:
+
+```
+docker-compose exec app mix setup
+```
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`

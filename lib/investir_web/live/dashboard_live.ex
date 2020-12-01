@@ -1,11 +1,18 @@
 defmodule InvestirWeb.DashboardLive do
   use InvestirWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    {:ok, %{body: %{"results" => %{"stocks" => stocks}} }} = Investir.Services.HgBrasil.get("/finance")
-    socket = assign(socket, :stocks, stocks)
-    # IO.inspect(socket)
+  alias Investir.Finance
 
-    {:ok, socket}
+  import Number.Currency
+
+  def mount(_params, _session, socket) do
+    overview = Finance.latest_overview()
+
+    socket =
+      assign(socket,
+        overview: overview
+      )
+
+    {:ok, socket, temporary_assigns: [overview: nil]}
   end
 end

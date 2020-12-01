@@ -32,8 +32,13 @@ defmodule Investir.Client.HTTP do
     config = get(:config)
     client = get(:client)
 
+    url =
+      URI.parse(config[:url])
+      |> Map.merge(%{path: path, query: encode_query(%{})})
+      |> to_string()
+
     method
-    |> Finch.build("#{config.url}#{path}", headers())
+    |> Finch.build(url, headers())
     |> Finch.request(client)
   end
 
@@ -43,7 +48,7 @@ defmodule Investir.Client.HTTP do
 
     url =
       URI.parse(config[:url])
-      |> Map.merge(%{path: path, query: URI.encode_query(query)})
+      |> Map.merge(%{path: path, query: encode_query(query)})
       |> to_string()
 
     method
@@ -57,7 +62,7 @@ defmodule Investir.Client.HTTP do
 
     url =
       URI.parse(config[:url])
-      |> Map.merge(%{path: path, query: URI.encode_query(query)})
+      |> Map.merge(%{path: path, query: encode_query(query)})
       |> to_string()
 
     method
@@ -71,7 +76,7 @@ defmodule Investir.Client.HTTP do
 
     url =
       URI.parse(config[:url])
-      |> Map.merge(%{path: path, query: URI.encode_query(query)})
+      |> Map.merge(%{path: path, query: encode_query(query)})
       |> to_string()
 
     method
@@ -80,9 +85,17 @@ defmodule Investir.Client.HTTP do
   end
 
   defp headers(other \\ []) do
-    other
-    # (get(:config)[:headers] || []) ++ other
+    (get(:config)[:headers] || []) ++ other
   end
+
+  defp encode_query(%{} = query) do
+    case get(:config)[:params] do
+      %{} = params -> Map.merge(params, query) |> URI.encode_query()
+      _ -> URI.encode_query(query)
+    end
+  end
+
+  defp encode_query(_), do: nil
 
   defp get(key) do
     Agent.get(__MODULE__, & &1)

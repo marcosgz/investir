@@ -9,6 +9,7 @@ services:
       - postgres
     environment:
       - DATABASE_URL=postgres://investir:investir@postgres:5432/investir?sslmode=disable
+      - SERVICES_HGBRASIL_API_KEY=
     ports:
       - 4000:4000
     volumes:
