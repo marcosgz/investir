@@ -16,7 +16,8 @@ defmodule Investir.Client.HTTP do
           pool_size: pool_size
         }
       end,
-      name: __MODULE__
+      name: __MODULE__,
+      id: config[:id]
     )
 
     {

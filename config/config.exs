@@ -27,22 +27,32 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :investir, Investir.Services.HgBrasil,
+  id: :hgbrasil,
   url: "https://api.hgbrasil.com",
   params: %{key: System.get_env("SERVICES_HGBRASIL_API_KEY")},
+  headers: []
+
+config :investir, Investir.Services.Fundamentus,
+  id: :fundamentus,
+  url: "https://fundamentus.com.br",
+  params: %{},
   headers: []
 
 config :investir, Investir.Cache,
   adapter: Nebulex.Adapters.Local,
   gc_interval: 3600
 
-config :number, currency: [
+config :number,
+  currency: [
     unit: "R$",
     precision: 2,
     delimiter: ".",
     separator: ",",
     format: "%u %n"
   ]
-config :number, percentage: [
+
+config :number,
+  percentage: [
     delimiter: ".",
     separator: ",",
     precision: 2

@@ -17,7 +17,9 @@ defmodule InvestirWeb.Router do
   scope "/", InvestirWeb do
     pipe_through :browser
 
-    live "/", DashboardLive
+    live "/organizations", OrganizationsLive, :index
+    live "/stories", StoriesLive, :index
+    live "/", DashboardLive, :index
   end
 
   # Other scopes may use custom stacks.

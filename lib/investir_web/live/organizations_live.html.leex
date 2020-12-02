@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title"> TOP 10 - Deep Value Investing</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table tablesorter ">
+            <thead class="text-primary">
+              <tr>
+                <th>Papel</th>
+                <th>Cotação</th>
+                <th>EV/EBIT</th>
+                <th>Patrim. Líq</th>
+                <th>Mrg. Líq</th>
+                <th>Cresc. Rec.</th>
+              </tr>
+            </thead>
+            <tbody id="stocks">
+              <%= for org <- @organizations do %>
+                <tr id="org-<%= org.id %>">
+                  <td><%= org.code %></td>
+                  <td><%= number_to_currency(org.quotation) %></td>
+                  <td><%= org.ev_ebi %></td>
+                  <td><%= number_to_currency(org.net_worth) %></td>
+                  <td><%= number_to_percentage(org.net_margin) %></td>
+                  <td>
+                    <%= live_component @socket, InvestirWeb.PercentageVariationComponent, amount: org.variation %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

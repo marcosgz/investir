@@ -16,6 +16,7 @@ defmodule Investir.Application do
       # Start the Endpoint (http/https)
       InvestirWeb.Endpoint,
       Investir.Services.HgBrasil.child_spec()
+      # Investir.Services.Fundamentus.child_spec()
       # Start a worker by calling: Investir.Worker.start_link(arg)
       # {Investir.Worker, arg}
     ]

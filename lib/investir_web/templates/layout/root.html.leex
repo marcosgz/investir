@@ -23,28 +23,22 @@
           </a>
         </div>
         <ul class="nav">
-          <li class="active ">
-            <a href="./dashboard.html">
+          <li class="<%= if @current_view == InvestirWeb.DashboardLive, do: "active" %>">
+            <a href="/">
               <i class="tim-icons icon-chart-pie-36"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li class="<%= if @current_view == InvestirWeb.StoriesLive, do: "active" %>">
+            <a href="/stories">
               <i class="tim-icons icon-align-center"></i>
               <p>Notícias</p>
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li class="<%= if @current_view == InvestirWeb.OrganizationsLive, do: "active" %>">
+            <a href="/organizations">
               <i class="tim-icons icon-world"></i>
               <p>Top 10 DVI</p>
-            </a>
-          </li>
-          <li class="active-pro">
-            <a href="#">
-              <i class="tim-icons icon-spaceship"></i>
-              <p>Upgrade to PRO</p>
             </a>
           </li>
         </ul>

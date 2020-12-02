@@ -145,8 +145,7 @@ alias Investir.Finance.Overview
 #   ]
 # }
 
-{:ok, %{body: %{"results" => overview_results}}} =
-  Investir.Services.HgBrasil.get("/finance")
+{:ok, %{body: %{"results" => overview_results}}} = Investir.Services.HgBrasil.get("/finance")
 
 stocks =
   Enum.map(Map.get(overview_results, "stocks"), fn {code, entry} ->
@@ -159,7 +158,8 @@ currencies =
       %{} -> %Overview.Currency{code: code} |> Overview.Currency.changeset(entry)
       _ -> nil
     end
-  end) |> Enum.filter(fn val -> val != nil end)
+  end)
+  |> Enum.filter(fn val -> val != nil end)
 
 bitcoins =
   Enum.map(Map.get(overview_results, "bitcoin"), fn {code, entry} ->
@@ -173,4 +173,89 @@ bitcoins =
   currencies: currencies,
   bitcoins: bitcoins
 }
-|> Investir.Repo.insert!
+|> Investir.Repo.insert!()
+
+
+body = %{
+  pl_min: nil,
+  pl_max: nil,
+  pvp_min: nil,
+  pvp_max: nil,
+  psr_min: nil,
+  psr_max: nil,
+  divy_min: nil,
+  divy_max: nil,
+  pativos_min: nil,
+  pativos_max: nil,
+  pcapgiro_min: nil,
+  pcapgiro_max: nil,
+  pebit_min: nil,
+  pebit_max: nil,
+  fgrah_min: nil,
+  fgrah_max: nil,
+  firma_ebit_min: 0,
+  firma_ebit_max: nil,
+  firma_ebitda_min: 0,
+  firma_ebitda_max: nil,
+  margemebit_min: nil,
+  margemebit_max: nil,
+  margemliq_min: nil,
+  margemliq_max: nil,
+  liqcorr_min: nil,
+  liqcorr_max: nil,
+  roic_min: nil,
+  roic_max: nil,
+  roe_min: nil,
+  roe_max: nil,
+  liq_min: 200000,
+  liq_max: nil,
+  patrim_min: nil,
+  patrim_max: nil,
+  divbruta_min: nil,
+  divbruta_max: nil,
+  tx_cresc_rec_min: nil,
+  tx_cresc_rec_max: nil,
+  setor: nil,
+  negociada: "ON",
+  ordem: "9",
+  x: "25",
+  y: "14"
+}
+
+url = "https://fundamentus.com.br/resultado.php"
+headers = [
+  {"User-Agent", "Mozilla/5.0"},
+  {"Origin", "https://fundamentus.com.br"},
+  {"Content-Type", "application/x-www-form-urlencoded"},
+  {"Accept", "text/html,application/xhtml+xml,application/xml"},
+  {"Referer", "https://fundamentus.com.br/buscaavancada.php"}
+]
+
+{:ok, response} = Finch.build(:post, url, headers, URI.encode_query(body)) |> Finch.request(Investir.Services.HgBrasil)
+{:ok, html} = Floki.parse_document(response.body)
+
+
+Enum.each(Floki.find(html, "#resultado tbody tr"), fn row ->
+  {_tr, _props, cols} = row
+
+  values = row |> Floki.find("td") |> Enum.map(&Floki.text(&1))
+
+  # td1 - Papel
+  # td2 - Cotacao
+  # td11 - EB/EBI
+  # td14 - Margem liquida
+  # td19 - Patrimonio liquido
+  # td21 - crescimento
+  org = %Investir.DeepValueInvesting.Organization{} |>
+    Investir.DeepValueInvesting.Organization.changeset(
+      %{
+        code: Enum.at(values, 0),
+        quotation: Enum.at(values, 1) |> String.replace(",", "."),
+        ev_ebi: Enum.at(values, 10) |> String.replace(",", "."),
+        net_margin: Enum.at(values, 13) |> String.replace(~r{[^,\d]+}, "") |> String.replace(",", "."),
+        net_worth: Enum.at(values, 18) |> String.replace(~r{[^,\d]+}, "") |> String.replace(",", "."),
+        variation: Enum.at(values, 20) |> String.replace(~r{[^,\d]+}, "") |> String.replace(",", "."),
+      }
+    )
+    |> Investir.Repo.insert!
+end)

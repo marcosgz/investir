@@ -10,6 +10,7 @@ defmodule InvestirWeb.DashboardLive do
 
     socket =
       assign(socket,
+        current_view: __MODULE__,
         overview: overview
       )
 
